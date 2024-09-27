@@ -1,0 +1,15 @@
+{
+    "name": "matheus/p1",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Matheus\\P1\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "MATHEUS LOPES"
+        }
+    ],
+    "require": {}
+}
