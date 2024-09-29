@@ -97,19 +97,30 @@ class produtos {
     }
     
 
-    // Excluir produto
-    public function delete($id, $userInsert) {
-        $stmt = $this->pdo->prepare("DELETE FROM produtos WHERE id = :id");
-        $result = $stmt->execute(['id' => $id]);
-        
-        // testar o $result para só criar o log caso sucesso
-        // Log de exclusão
-        $log = new Log();
-        $log->create('delete', $id, $userInsert); // Verifique se $id não é nulo
-    
-        http_response_code(200);
-        return "Produto excluído com sucesso!";
+// Excluir produto
+public function delete($id, $userInsert) {
+    $stmt = $this->pdo->prepare("DELETE FROM produtos WHERE id = :id");
+    $result = $stmt->execute(['id' => $id]);
+
+    // Verificar se a exclusão foi bem-sucedida
+    if ($result) {
+        // Verificar se $userInsert não é nulo ou vazio
+        if (!empty($userInsert)) {
+            // Log de exclusão
+            $log = new Log();
+            $log->create('delete', $id, $userInsert);
+
+            http_response_code(200);
+            return "Produto excluído com sucesso!";
+        } else {
+            http_response_code(400); // Bad Request
+            return "Usuário que realizou a operação não foi fornecido.";
+        }
+    } else {
+        http_response_code(500);
+        return "Erro ao excluir o produto.";
     }
-    
 }
+}
+
 ?>
